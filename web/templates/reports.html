@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Видеонаблюдение</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/"><i class="fas fa-video"></i> Живая трансляция</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/grid"><i class="fas fa-th"></i> Сетка</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/reports"><i class="fas fa-file-alt"></i> Отчеты <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fas fa-exclamation-triangle"></i> Происшествия</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fas fa-life-ring"></i> Поддержка</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <h1>Создание отчетов</h1>
+    <form method="POST">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="start_date">Начальная дата:</label>
+                <input type="date" class="form-control" id="start_date" name="start_date" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="end_date">Конечная дата:</label>
+                <input type="date" class="form-control" id="end_date" name="end_date" required>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Создать отчет</button>
+    </form>
+
+    {% if reports_data %}
+        <h2 class="mt-5">Отчет с {{ start_date }} по {{ end_date }}</h2>
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>Название камеры</th>
+                    <th>Время срабатывания</th>
+                    <th>Фото срабатывания</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in reports_data %}
+                    <tr>
+                        <td>{{ row[0] }}</td>
+                        <td>{{ row[1] }}</td>
+                        <td><img src="{{ row[2] }}" alt="Detection Photo" style="width: 100px; height: auto;"></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    <p>Общее количество срабатываний: {{ reports_data | length }}</p>
+    {% endif %}
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

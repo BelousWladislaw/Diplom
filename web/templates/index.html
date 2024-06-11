@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Video Stream</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .dark-theme {
+            background-color: #343a40;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Видеонаблюдение</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/"><i class="fas fa-video"></i> Живая трансляция <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/grid"><i class="fas fa-th"></i> Сетка</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/reports"><i class="fas fa-file-alt"></i> Отчеты</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fas fa-exclamation-triangle"></i> Происшествия</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fas fa-life-ring"></i> Поддержка</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 d-flex flex-column align-items-center">
+            <label for="camera" class="text-center mt-5 mb-4 camera-label" style="font-weight: bold; font-size: 24px;">Camera 1</label>
+            <div class="embed-responsive embed-responsive-16by9" style="width: 100%;">
+                <video id="videoElement" class="embed-responsive-item" autoplay playsinline style="height: 100%;"></video>
+            </div>
+            <div class="mt-3">
+                <button class="btn btn-primary mr-2" onclick="rewindVideo(-10)"><i class="fas fa-fast-backward"></i></button>
+                <button class="btn btn-primary mr-2" onclick="rewindVideo(-5)"><i class="fas fa-backward"></i></button>
+                <button class="btn btn-primary mr-2" onclick="playPauseVideo()"><i class="fas fa-play"></i>/<i class="fas fa-pause"></i></button>
+                <button class="btn btn-primary mr-2" onclick="rewindVideo(5)"><i class="fas fa-forward"></i></button>
+                <button class="btn btn-primary" onclick="rewindVideo(10)"><i class="fas fa-fast-forward"></i></button>
+            </div>
+        </div>
+        <div class="col-md-4 d-flex flex-column align-items-start mt-5">
+            <form>
+                <div class="form-group">
+                    <label for="cameraSelect" class="camera-label" style="font-weight: bold; font-size: 24px;">Выберите камеру:</label>
+                    <select class="form-control" id="cameraSelect" style="font-size: 20px;">
+                        <option>Camera 1</option>
+                        <option>Camera 2</option>
+                        <option>Camera 3</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="datePicker" class="camera-label" style="font-weight: bold; font-size: 24px;">Выберите дату:</label>
+                    <input type="date" id="datePicker" class="form-control" style="font-size: 20px;">
+                </div>
+            </form>
+        </div>
+    </div>
+    <button id="theme-toggle" class="btn btn-secondary mt-3">Переключить тему</button>
+</div>
+
+<script>
+    function rewindVideo(seconds) {
+        var video = document.getElementById('videoElement');
+        video.currentTime += seconds;
+    }
+
+    function playPauseVideo() {
+        var video = document.getElementById('videoElement');
+        if (video.paused) {
+            video.play();
+        } else {
+            video.pause();
+        }
+    }
+
+    function toggleTheme() {
+        const body = document.body;
+        const isDark = body.classList.contains('dark-theme');
+        if (isDark) {
+            body.classList.remove('dark-theme');
+        } else {
+            body.classList.add('dark-theme');
+        }
+    }
+
+    document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+
+    const video = document.getElementById('videoElement');
+
+    function handleError(error) {
+        console.error('Error accessing webcam:', error);
+    }
+
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+            video.srcObject = stream;
+        })
+        .catch(handleError);
+
+    video.addEventListener('error', event => {
+        console.error('Video element error:', event);
+    });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

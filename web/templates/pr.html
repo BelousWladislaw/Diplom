@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fire Detection System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .video-container {
+            width: 640px;
+            height: 360px;
+            margin: 20px auto;
+            position: relative;
+        }
+        video {
+            width: 100%;
+            height: 100%;
+        }
+        .confirmation-buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .confirmation-buttons button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .confirmation-buttons button.yes {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+        }
+        .confirmation-buttons button.no {
+            background-color: #f44336;
+            color: white;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="video-container">
+    <video autoplay playsinline></video>
+</div>
+
+<div class="confirmation-buttons">
+    <button class="yes" onclick="confirmDetection()">Подтвердить срабатывание</button>
+    <button class="no" onclick="rejectDetection()">Отклонить срабатывание</button>
+</div>
+
+<script>
+    // Заглушка для получения видеопотока
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+            const videoElement = document.querySelector('video');
+            videoElement.srcObject = stream;
+        })
+        .catch(error => {
+            console.error('Error accessing webcam:', error);
+        });
+
+    function confirmDetection() {
+        alert('Срабатывание системы подтверждено');
+    }
+
+    function rejectDetection() {
+        alert('Срабатывание системы отклонено');
+
+    }
+</script>
+
+</body>
+</html>
